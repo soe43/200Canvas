@@ -4,26 +4,56 @@ var clearbutt=document.getElementById("clear");
 var togglebutt=document.getElementById("toggle");
 
 var drawShape = 'square';
+var circleNum = 0;
+
+var previousX;
+var previousY;
 
 var drawRect = function(e){
-    var mouseX = e.pageX - 35;
-    var mouseY = e.pageY - 35;
+    var mouseX = e.offsetX;
+    var mouseY = e.offsetY;
     ctx.fillStyle = "lightsteelblue";
     ctx.fillRect(mouseX, mouseY, 50, 50);
 };
 
 var drawCircle = function(e){
-    var mouseX = e.clientX - 11;
-    var mouseY = e.clientY - 11;
-    ctx.fillStyle = "lightsteelblue";
-    ctx.beginPath()
-    ctx.arc(mouseX, mouseY, 25, 0, 2 * Math.PI);
-    ctx.stroke();
-    ctx.fill();
+    if(circleNum == 0){
+	var mouseX = e.offsetX;
+	var mouseY = e.offsetY;
+	ctx.fillStyle = "pink";
+	ctx.beginPath();
+	ctx.arc(mouseX, mouseY, 25, 0, 2 * Math.PI);
+	ctx.stroke();
+	ctx.fill();
+	circleNum++;
+	previousX = mouseX;
+	previousY = mouseY;
+	console.log(circleNum);
+    }
+    else{
+	var mouseX = e.offsetX;
+	var mouseY = e.offsetY;
+	ctx.fillStyle = "pink";
+	ctx.beginPath()
+	ctx.moveTo(previousX, previousY);
+	ctx.lineTo(mouseX, mouseY);
+	ctx.stroke();
+	previousX = mouseX;
+	previousY = mouseY;
+	ctx.beginPath();
+	ctx.arc(mouseX, mouseY, 25, 0, 2 * Math.PI);
+	ctx.stroke();
+	ctx.fill();
+	circleNum++;
+	console.log(circleNum);
+    }
 };
 
 var clear = function(){
     ctx.clearRect(0,0,500,500);
+    circleNum = 0;
+    previousX = 0;
+    previousY = 0;
 };
 
 var switchShapes = function(){
